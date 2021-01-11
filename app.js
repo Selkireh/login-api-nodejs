@@ -1,6 +1,8 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 
+require('./src/database/dbConn.js')
+
 const app = express()
 
 app.use(bodyParser.json())

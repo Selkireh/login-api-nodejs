@@ -1,17 +1,30 @@
-const userMD = require('../models/userMD')
+const UserMD = require('../models/UserMD')
 
-module.exports.salvar = async (req, res) => {
-    const { name, email, password, password_hash, status } = req.body
+module.exports.store = async (req, res) => {
 
-    const salvo = userMD.create({ name, email, password, password_hash, status })
+    var user = {
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
+        password_hash: req.body.password_hash ? req.body.password_hash : "asdasd",
+        status: req.body.status ? req.body.status : true
+    }
 
-    return res.json(salvo)
+    await UserMD.create({ name: user.name,email: user.email,password: user.password,password_hash: user.password_hash,status: user.status })
+    .then((re) => {
+        res.send(re)
+    })
+    .catch((err) => {
+        console.log(err)
+        res.status(400).send({ error: "ocorreu um erro"})
+    })
+
 }
 
 module.exports.login = async (req, res) => {
     const { email, password } = req.body
 
-    const userFind = userMD.findOne({ where : { email: email, password: password }})
+    const userFind = await UserMD.findOne({ where : { email: email, password: password }})
 
     if (!userFind)
         return res.status(400).send({ error: "usuario não encontrado"})

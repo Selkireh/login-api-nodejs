@@ -1,8 +1,9 @@
 const Sequelize = require('sequelize')
 const dbConfig = require('../config/database')
-const GestorMD = require('../models/GestorMD')
-
+const UserMD = require('../models/UserMD')
 
 const connection = new Sequelize(dbConfig)
+
+UserMD.init(connection)
 
 module.exports = connection
